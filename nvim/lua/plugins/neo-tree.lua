@@ -43,11 +43,7 @@ return {
     },
     config = function(_, opts)
       require('neo-tree').setup(opts)
-      vim.api.nvim_create_autocmd('VimEnter', {
-        callback = function()
-          vim.cmd('Neotree show')
-        end,
-      })
+      vim.defer_fn(function() vim.cmd('Neotree show') end, 0)
     end,
   },
 }
