@@ -1,3 +1,3 @@
 require('config.options')
--- lazy + plugins arrive in Task 6
+require('config.lazy')
 -- keymaps arrive in Task 14
