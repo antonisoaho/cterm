@@ -1,0 +1,9 @@
+# nvim runtime under XDG_DATA_HOME / STATE / CACHE
+.data/
+.state/
+.cache/
+
+# OS / editor cruft
+Thumbs.db
+.DS_Store
+*.swp
