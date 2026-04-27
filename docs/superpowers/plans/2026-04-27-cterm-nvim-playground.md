@@ -518,7 +518,7 @@ Quit with `:qa`.
 ```bash
 git add nvim/lua/plugins/colorscheme.lua nvim/lua/config/lazy.lua
 git rm nvim/lua/plugins/_placeholder.lua
-git commit -m "feat(nvim): claude-aligned mini.base16 colorscheme"
+git commit -m "feat(nvim): warm-orange mini.base16 palette"
 ```
 
 ---
@@ -1152,7 +1152,7 @@ Close window when verified.
 
 ```bash
 git add wezterm.lua
-git commit -m "feat: wire claude and nvim into wezterm panes"
+git commit -m "feat: wire launcher commands into wezterm panes"
 ```
 
 ---
