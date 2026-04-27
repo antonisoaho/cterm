@@ -5,4 +5,4 @@ export XDG_CONFIG_HOME="$REPO"
 export XDG_DATA_HOME="$REPO/.data"
 export XDG_STATE_HOME="$REPO/.state"
 export XDG_CACHE_HOME="$REPO/.cache"
-exec wezterm start --config-file "$REPO/wezterm.lua" --always-new-process
+exec wezterm --config-file "$REPO/wezterm.lua" start --always-new-process
