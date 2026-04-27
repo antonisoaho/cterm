@@ -3,6 +3,7 @@ return {
     'nvim-neo-tree/neo-tree.nvim',
     branch = 'v3.x',
     cmd = 'Neotree',
+    event = 'VimEnter',
     dependencies = {
       'nvim-lua/plenary.nvim',
       'nvim-tree/nvim-web-devicons',
@@ -40,5 +41,13 @@ return {
         filtered_items = { hide_dotfiles = false, hide_gitignored = false },
       },
     },
+    config = function(_, opts)
+      require('neo-tree').setup(opts)
+      vim.api.nvim_create_autocmd('VimEnter', {
+        callback = function()
+          vim.cmd('Neotree show')
+        end,
+      })
+    end,
   },
 }
