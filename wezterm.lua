@@ -5,13 +5,13 @@ wezterm.on('gui-startup', function(cmd)
   local repo = wezterm.config_dir
   local _tab, left, window = mux.spawn_window {
     cwd = repo,
-    args = { 'cmd.exe', '/k', 'echo LEFT pane placeholder (will run claude)' },
+    args = { 'claude' },
   }
   local _right = left:split {
     direction = 'Right',
     size = 0.55,
     cwd = repo,
-    args = { 'cmd.exe', '/k', 'echo RIGHT pane placeholder (will run nvim)' },
+    args = { 'nvim' },
   }
   window:gui_window():maximize()
 end)
