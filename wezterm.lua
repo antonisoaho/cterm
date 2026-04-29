@@ -4,9 +4,15 @@ local mux = wezterm.mux
 wezterm.on('gui-startup', function(cmd)
   local repo = wezterm.config_dir
   local cwd = os.getenv('CTERM_CWD') or repo
+  local agent = os.getenv('CTERM_AGENT') or 'claude'
+  local agent_args = { agent }
+  if agent == 'claude' then
+    table.insert(agent_args, '--settings')
+    table.insert(agent_args, repo .. '/.claude/settings.json')
+  end
   local _tab, left, window = mux.spawn_window {
     cwd = cwd,
-    args = { 'claude' },
+    args = agent_args,
   }
   local _right = left:split {
     direction = 'Right',
