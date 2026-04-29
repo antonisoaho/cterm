@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|EnterPlanMode",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CTERM_REPO/scripts/nvim-open.sh\""
+          }
+        ]
+      }
+    ]
+  }
+}

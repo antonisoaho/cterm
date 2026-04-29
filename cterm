@@ -11,6 +11,7 @@ done
 REPO="$(cd "$(dirname "$SCRIPT")" && pwd -W 2>/dev/null || cd "$(dirname "$SCRIPT")" && pwd)"
 
 export CTERM_CWD="${PWD}"
+export CTERM_REPO="$REPO"
 export XDG_CONFIG_HOME="$REPO"
 export XDG_DATA_HOME="$REPO/.data"
 export XDG_STATE_HOME="$REPO/.state"
