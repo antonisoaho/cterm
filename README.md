@@ -90,7 +90,7 @@ The `cterm` working directory becomes the agent's working directory.
 | `<leader>hp/s/r/b`| Hunk preview / stage / reset / blame        |
 | `<leader>ff/g/b/h`| Telescope files / grep / buffers / help     |
 | `<S-h>` / `<S-l>` | Prev / next buffer                          |
-| `<leader>bd`      | Delete (close) buffer                       |
+| `<leader>bd`      | Close current file (keep window/nvim open)  |
 | `<C-h/j/k/l>`     | Window navigation (incl. terminal)          |
 | `<Esc>` (term)    | Terminal to normal mode                     |
 | `<leader>w/q`     | Save / quit                                 |

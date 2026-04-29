@@ -21,7 +21,16 @@ map('t', '<Esc>', [[<C-\><C-n>]], { desc = 'Term to normal' })
 -- buffer navigation
 map('n', '<S-h>', '<cmd>BufferLineCyclePrev<cr>', { desc = 'Prev buffer' })
 map('n', '<S-l>', '<cmd>BufferLineCycleNext<cr>', { desc = 'Next buffer' })
-map('n', '<leader>bd', '<cmd>bdelete<cr>',         { desc = 'Delete buffer' })
+map('n', '<leader>bd', function()
+  local buf = vim.api.nvim_get_current_buf()
+  local listed = vim.fn.getbufinfo({ buflisted = 1 })
+  if #listed > 1 then
+    vim.cmd('bprevious')
+  else
+    vim.cmd('enew')
+  end
+  vim.api.nvim_buf_delete(buf, { force = false })
+end, { desc = 'Close file (keep window)' })
 
 -- clear search highlight
 map('n', '<Esc>', '<cmd>nohlsearch<cr>', { desc = 'Clear search highlight' })
