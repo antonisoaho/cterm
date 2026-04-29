@@ -4,6 +4,9 @@
 .cache/
 .claude/settings.local.json
 
+# local-only superpowers workspace
+docs/superpowers/
+
 # OS / editor cruft
 Thumbs.db
 .DS_Store
