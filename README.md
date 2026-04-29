@@ -120,6 +120,9 @@ put there layers on top of the bundled config.
 | `Alt+h`  | Focus left pane (agent) |
 | `Alt+l`  | Focus right pane (nvim) |
 | `Shift+Enter` | Newline in agent prompt (no submit) |
+| `Ctrl+Shift+C` / `Ctrl+Insert` | Copy selection to clipboard |
+| `Ctrl+Shift+V` / `Shift+Insert` / right-click | Paste from clipboard |
+| Drag with mouse | Select; releasing copies to clipboard |
 
 ## Neovim keymaps (leader = Space)
 

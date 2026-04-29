@@ -40,5 +40,21 @@ return {
     { key = 'h', mods = 'ALT', action = wezterm.action.ActivatePaneDirection('Left') },
     { key = 'l', mods = 'ALT', action = wezterm.action.ActivatePaneDirection('Right') },
     { key = 'Enter', mods = 'SHIFT', action = wezterm.action.SendString('\x1b\r') },
+    { key = 'c', mods = 'CTRL|SHIFT', action = wezterm.action.CopyTo('Clipboard') },
+    { key = 'v', mods = 'CTRL|SHIFT', action = wezterm.action.PasteFrom('Clipboard') },
+    { key = 'Insert', mods = 'SHIFT', action = wezterm.action.PasteFrom('Clipboard') },
+    { key = 'Insert', mods = 'CTRL', action = wezterm.action.CopyTo('Clipboard') },
+  },
+  mouse_bindings = {
+    {
+      event = { Up = { streak = 1, button = 'Left' } },
+      mods = 'NONE',
+      action = wezterm.action.CompleteSelection('Clipboard'),
+    },
+    {
+      event = { Down = { streak = 1, button = 'Right' } },
+      mods = 'NONE',
+      action = wezterm.action.PasteFrom('Clipboard'),
+    },
   },
 }
