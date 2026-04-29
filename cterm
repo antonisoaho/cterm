@@ -32,6 +32,7 @@ set +a
 export CTERM_CWD="${PWD}"
 export CTERM_AGENT="${1:-${CTERM_DEFAULT_AGENT:-claude}}"
 export CTERM_REPO="$REPO"
+export CTERM_NVIM_ADDR="127.0.0.1:$((6666 + RANDOM % 1000))"
 
 if [ "${CTERM_USE_USER_NVIM:-0}" = "1" ]; then
   : # leave XDG_* alone -> user's normal nvim config is used

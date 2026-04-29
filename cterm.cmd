@@ -23,6 +23,8 @@ set "CTERM_CWD=%CD%"
 if "%~1"=="" (set "CTERM_AGENT=%CTERM_DEFAULT_AGENT%") else (set "CTERM_AGENT=%~1")
 if "%CTERM_AGENT%"=="" set "CTERM_AGENT=claude"
 set "CTERM_REPO=%REPO%"
+set /a "_NVIM_PORT=6666 + %RANDOM% %% 1000"
+set "CTERM_NVIM_ADDR=127.0.0.1:%_NVIM_PORT%"
 
 if "%CTERM_USE_USER_NVIM%"=="1" (
   rem leave XDG_* alone -> user's normal nvim config is used

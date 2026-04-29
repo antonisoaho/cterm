@@ -18,7 +18,7 @@ wezterm.on('gui-startup', function(cmd)
     direction = 'Right',
     size = 0.55,
     cwd = cwd,
-    args = { 'nvim', '--listen', '127.0.0.1:6666' },
+    args = { 'nvim', '--listen', os.getenv('CTERM_NVIM_ADDR') or '127.0.0.1:6666' },
   }
   window:gui_window():maximize()
 end)
