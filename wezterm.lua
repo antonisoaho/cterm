@@ -5,7 +5,8 @@ wezterm.on('gui-startup', function(cmd)
   local repo = wezterm.config_dir
   local cwd = os.getenv('CTERM_CWD') or repo
   local agent = os.getenv('CTERM_AGENT') or 'claude'
-  local agent_args = { agent }
+  local is_windows = wezterm.target_triple:find('windows') ~= nil
+  local agent_args = is_windows and { 'cmd', '/c', agent } or { agent }
   if agent == 'claude' then
     table.insert(agent_args, '--settings')
     table.insert(agent_args, repo .. '/.claude/settings.json')
