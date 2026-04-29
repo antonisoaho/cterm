@@ -10,11 +10,36 @@ while [ -L "$SCRIPT" ]; do
 done
 REPO="$(cd "$(dirname "$SCRIPT")" && pwd -W 2>/dev/null || cd "$(dirname "$SCRIPT")" && pwd)"
 
+PY="$(command -v python3 || command -v python || true)"
+
+# Explicit setup invocation
+if [ "${1:-}" = "--setup" ] || [ "${1:-}" = "setup" ]; then
+  [ -z "$PY" ] && { echo "python3 required for setup"; exit 1; }
+  exec "$PY" "$REPO/scripts/setup.py"
+fi
+
+# First-run: no local config -> run setup
+if [ ! -f "$REPO/cterm.local" ]; then
+  [ -z "$PY" ] && { echo "python3 required for first-run setup"; exit 1; }
+  "$PY" "$REPO/scripts/setup.py" || exit $?
+fi
+
+# Source local overrides
+set -a
+. "$REPO/cterm.local"
+set +a
+
 export CTERM_CWD="${PWD}"
-export CTERM_AGENT="${1:-claude}"
+export CTERM_AGENT="${1:-${CTERM_DEFAULT_AGENT:-claude}}"
 export CTERM_REPO="$REPO"
-export XDG_CONFIG_HOME="$REPO"
-export XDG_DATA_HOME="$REPO/.data"
-export XDG_STATE_HOME="$REPO/.state"
-export XDG_CACHE_HOME="$REPO/.cache"
+
+if [ "${CTERM_USE_USER_NVIM:-0}" = "1" ]; then
+  : # leave XDG_* alone -> user's normal nvim config is used
+else
+  export XDG_CONFIG_HOME="$REPO"
+  export XDG_DATA_HOME="$REPO/.data"
+  export XDG_STATE_HOME="$REPO/.state"
+  export XDG_CACHE_HOME="$REPO/.cache"
+fi
+
 exec wezterm --config-file "$REPO/wezterm.lua" start --always-new-process

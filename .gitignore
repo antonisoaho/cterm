@@ -4,6 +4,13 @@
 .cache/
 .claude/settings.local.json
 
+# user-local cterm config (created by setup.py)
+cterm.local
+cterm.local.cmd
+
+# user-local nvim overrides
+nvim/lua/config/local.lua
+
 # local-only superpowers workspace
 docs/superpowers/
 

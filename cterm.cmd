@@ -2,13 +2,53 @@
 setlocal
 set "REPO=%~dp0"
 set "REPO=%REPO:~0,-1%"
+
+if /i "%~1"=="--setup" (
+  call :run_setup
+  goto :end
+)
+if /i "%~1"=="setup" (
+  call :run_setup
+  goto :end
+)
+
+if not exist "%REPO%\cterm.local.cmd" (
+  call :run_setup
+  if not exist "%REPO%\cterm.local.cmd" exit /b 1
+)
+
+call "%REPO%\cterm.local.cmd"
+
 set "CTERM_CWD=%CD%"
-set "CTERM_AGENT=%~1"
+if "%~1"=="" (set "CTERM_AGENT=%CTERM_DEFAULT_AGENT%") else (set "CTERM_AGENT=%~1")
 if "%CTERM_AGENT%"=="" set "CTERM_AGENT=claude"
 set "CTERM_REPO=%REPO%"
-set "XDG_CONFIG_HOME=%REPO%"
-set "XDG_DATA_HOME=%REPO%\.data"
-set "XDG_STATE_HOME=%REPO%\.state"
-set "XDG_CACHE_HOME=%REPO%\.cache"
+
+if "%CTERM_USE_USER_NVIM%"=="1" (
+  rem leave XDG_* alone -> user's normal nvim config is used
+) else (
+  set "XDG_CONFIG_HOME=%REPO%"
+  set "XDG_DATA_HOME=%REPO%\.data"
+  set "XDG_STATE_HOME=%REPO%\.state"
+  set "XDG_CACHE_HOME=%REPO%\.cache"
+)
+
 wezterm --config-file "%REPO%\wezterm.lua" start --always-new-process
+goto :end
+
+:run_setup
+where python >nul 2>&1
+if %errorlevel%==0 (
+  python "%REPO%\scripts\setup.py"
+  exit /b
+)
+where python3 >nul 2>&1
+if %errorlevel%==0 (
+  python3 "%REPO%\scripts\setup.py"
+  exit /b
+)
+echo python required for setup
+exit /b 1
+
+:end
 endlocal

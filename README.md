@@ -77,17 +77,41 @@ Restart your terminal afterward.
 
 If `~/.local/bin` is not on your `PATH`, the script prints the line to add.
 
+## First run
+
+The first time you launch `cterm` it runs an interactive setup that asks for
+your default agent, font, font size, and whether to use your own nvim config.
+The answers are written to `cterm.local` (and `cterm.local.cmd` on Windows) —
+both gitignored. Re-run anytime:
+
+    cterm --setup
+
 ## Launch
 
 From any directory:
 
-    cterm              # uses Claude Code (default)
-    cterm copilot      # uses GitHub Copilot CLI
-    cterm codex        # uses Codex
-    cterm gemini       # uses Gemini
+    cterm              # uses your CTERM_DEFAULT_AGENT (claude unless changed)
+    cterm copilot      # override: GitHub Copilot CLI
+    cterm codex        # override: Codex
+    cterm gemini       # override: Gemini
     cterm <bin>        # any binary on PATH
 
 The `cterm` working directory becomes the agent's working directory.
+
+## User-local overrides
+
+Settings in `cterm.local` (managed by `cterm --setup`):
+
+| Variable               | Effect                                          |
+|------------------------|-------------------------------------------------|
+| `CTERM_DEFAULT_AGENT`  | Agent used when no CLI arg given                |
+| `CTERM_FONT`           | Primary font in WezTerm                         |
+| `CTERM_FONT_SIZE`      | WezTerm font size                               |
+| `CTERM_USE_USER_NVIM`  | `1` skips the bundled nvim and uses your normal config (`~/.config/nvim` or `%LOCALAPPDATA%\nvim`) |
+
+Nvim-side overrides: drop a file at `nvim/lua/config/local.lua` (gitignored).
+`init.lua` will `pcall(require, 'config.local')` on startup, so anything you
+put there layers on top of the bundled config.
 
 ## Pane navigation
 

@@ -29,11 +29,11 @@ return {
     background = '#1a1a1a',
   },
   font = wezterm.font_with_fallback({
-    'JetBrainsMono Nerd Font',
+    os.getenv('CTERM_FONT') or 'JetBrainsMono Nerd Font',
     'JetBrains Mono',
     'Consolas',
   }),
-  font_size = 11,
+  font_size = tonumber(os.getenv('CTERM_FONT_SIZE')) or 11,
   hide_tab_bar_if_only_one_tab = true,
   window_padding = { left = 4, right = 4, top = 2, bottom = 2 },
   keys = {
