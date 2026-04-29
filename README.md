@@ -17,20 +17,40 @@ automatically. Works on Windows and macOS/Linux.
 
 ## Prerequisites
 
-Install these first:
+You need WezTerm, Neovim ≥ 0.10, Python 3, Node.js (for the npm-based agent
+CLIs), a Nerd Font, and at least one agent CLI.
 
-- **WezTerm** — https://wezterm.org/install/
-- **Neovim ≥ 0.10** — https://neovim.io/
-- **Python 3** — required by the editor-sync hook
-- **An agent CLI** — at least one of:
-  - `claude` (Claude Code) — https://docs.anthropic.com/claude/code
-  - `copilot` (GitHub Copilot CLI)
-  - `codex`
-  - `gemini`
-- **A Nerd Font** — JetBrainsMono Nerd Font recommended:
-  https://www.nerdfonts.com/
+### Windows (winget)
 
-Verify each is on `PATH`:
+    winget install --id=wez.wezterm
+    winget install --id=Neovim.Neovim
+    winget install --id=Python.Python.3.13
+    winget install --id=OpenJS.NodeJS
+    winget install --id=GitHub.cli
+
+JetBrainsMono Nerd Font — download `JetBrainsMono.zip` from
+https://github.com/ryanoasis/nerd-fonts/releases and install the `.ttf` files.
+
+### macOS (Homebrew)
+
+    brew install --cask wezterm
+    brew install neovim python node gh
+    brew install --cask font-jetbrains-mono-nerd-font
+
+### Agent CLI (pick one or more)
+
+Most agents ship via npm:
+
+    npm install -g @anthropic-ai/claude-code   # claude
+    npm install -g @openai/codex               # codex
+    npm install -g @google/gemini-cli          # gemini
+
+GitHub Copilot CLI is a `gh` extension:
+
+    gh auth login
+    gh extension install github/gh-copilot
+
+### Verify
 
     wezterm --version
     nvim --version
@@ -43,7 +63,7 @@ Clone the repo, then run the installer for your OS.
 
 **Windows (PowerShell)** — adds the repo to your user `PATH`:
 
-    git clone https://github.com/<you>/cterm.git
+    git clone https://github.com/antonisoaho/cterm.git
     cd cterm
     powershell -ExecutionPolicy Bypass -File install.ps1
 
@@ -51,7 +71,7 @@ Restart your terminal afterward.
 
 **macOS / Linux / git-bash / WSL** — symlinks into `~/.local/bin`:
 
-    git clone https://github.com/<you>/cterm.git
+    git clone https://github.com/antonisoaho/cterm.git
     cd cterm
     bash install.sh
 
@@ -133,6 +153,3 @@ Inside the playground nvim:
 
 Commit the resulting `nvim/lazy-lock.json` to pin versions.
 
-## Design
-
-See `docs/superpowers/specs/2026-04-27-cterm-nvim-playground-design.md`.
