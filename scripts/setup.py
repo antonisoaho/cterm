@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""Interactive setup for cterm. Writes cterm.local and cterm.local.cmd."""
+"""Interactive setup for cterm. Writes cterm.local and cterm.local.cmd,
+optionally enables the caveman plugin globally."""
+import json
 import os
 import sys
 from pathlib import Path
@@ -33,6 +35,41 @@ def ask_yes_no(prompt, default='n'):
     return ans == 'y'
 
 
+def caveman_config_dir():
+    if os.environ.get('XDG_CONFIG_HOME'):
+        return Path(os.environ['XDG_CONFIG_HOME']) / 'caveman'
+    if sys.platform == 'win32':
+        return Path(os.environ.get('APPDATA', Path.home() / 'AppData' / 'Roaming')) / 'caveman'
+    return Path.home() / '.config' / 'caveman'
+
+
+def enable_caveman():
+    cfg_dir = caveman_config_dir()
+    cfg_dir.mkdir(parents=True, exist_ok=True)
+    cfg_path = cfg_dir / 'config.json'
+    cfg_path.write_text(json.dumps({'defaultMode': 'ultra'}, indent=2) + '\n')
+    print(f"  wrote {cfg_path} (defaultMode: ultra)")
+
+    settings_path = Path.home() / '.claude' / 'settings.json'
+    settings_path.parent.mkdir(parents=True, exist_ok=True)
+    settings = {}
+    if settings_path.exists():
+        try:
+            settings = json.loads(settings_path.read_text())
+        except Exception:
+            print(f"  warning: {settings_path} is not valid JSON; leaving as is")
+            return
+
+    settings.setdefault('extraKnownMarketplaces', {})['caveman'] = {
+        'source': {'source': 'github', 'repo': 'JuliusBrussee/caveman'}
+    }
+    settings.setdefault('enabledPlugins', {})['caveman@caveman'] = True
+
+    settings_path.write_text(json.dumps(settings, indent=2) + '\n')
+    print(f"  updated {settings_path} (caveman marketplace + plugin enabled)")
+    print("  caveman plugin will install on next claude session.")
+
+
 def main():
     print("cterm setup\n-----------")
 
@@ -45,6 +82,11 @@ def main():
         print(f"  invalid size, using {DEFAULT_FONT_SIZE}")
         size = DEFAULT_FONT_SIZE
     use_user_nvim = ask_yes_no("Use your own nvim config (instead of bundled)?", default='n')
+
+    install_caveman = False
+    if agent == 'claude':
+        install_caveman = ask_yes_no(
+            "Install caveman plugin (terse output, default mode: ultra)?", default='n')
 
     sh = REPO / 'cterm.local'
     sh.write_text(
@@ -67,7 +109,12 @@ def main():
 
     print(f"\nWrote {sh}")
     print(f"Wrote {cmd}")
-    print("Done. Run `cterm` to launch.")
+
+    if install_caveman:
+        print("\nEnabling caveman globally...")
+        enable_caveman()
+
+    print("\nDone. Run `cterm` to launch.")
 
 
 if __name__ == '__main__':

@@ -80,7 +80,9 @@ If `~/.local/bin` is not on your `PATH`, the script prints the line to add.
 ## First run
 
 The first time you launch `cterm` it runs an interactive setup that asks for
-your default agent, font, font size, and whether to use your own nvim config.
+your default agent, font, font size, whether to use your own nvim config, and
+(if claude is the default) whether to install the caveman plugin (which sets
+caveman ultra as the global default mode).
 The answers are written to `cterm.local` (and `cterm.local.cmd` on Windows) —
 both gitignored. Re-run anytime:
 
@@ -141,6 +143,12 @@ put there layers on top of the bundled config.
 | `<C-h/j/k/l>`     | Window navigation (incl. terminal)          |
 | `<Esc>` (term)    | Terminal to normal mode                     |
 | `<leader>w/q`     | Save / quit                                 |
+
+## Statusline
+
+cterm sessions get a minimal Claude Code statusline (`scripts/statusline.sh`)
+showing model and current directory. It's scoped to cterm via `--settings`, so
+your global statusline remains in effect for sessions outside cterm.
 
 ## How the agent → nvim sync works
 
