@@ -18,5 +18,10 @@ map('t', '<C-l>', [[<C-\><C-n><C-w>l]], { desc = 'Window right from term' })
 -- escape from terminal mode
 map('t', '<Esc>', [[<C-\><C-n>]], { desc = 'Term to normal' })
 
+-- buffer navigation
+map('n', '<S-h>', '<cmd>BufferLineCyclePrev<cr>', { desc = 'Prev buffer' })
+map('n', '<S-l>', '<cmd>BufferLineCycleNext<cr>', { desc = 'Next buffer' })
+map('n', '<leader>bd', '<cmd>bdelete<cr>',         { desc = 'Delete buffer' })
+
 -- clear search highlight
 map('n', '<Esc>', '<cmd>nohlsearch<cr>', { desc = 'Clear search highlight' })
