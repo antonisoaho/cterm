@@ -1,6 +1,16 @@
 #!/usr/bin/env bash
 set -euo pipefail
-REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -W 2>/dev/null || cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Resolve symlinks so PATH-installed symlinks still find the repo
+SCRIPT="${BASH_SOURCE[0]}"
+while [ -L "$SCRIPT" ]; do
+  SCRIPT_DIR="$(cd "$(dirname "$SCRIPT")" && pwd)"
+  SCRIPT="$(readlink "$SCRIPT")"
+  [[ "$SCRIPT" != /* ]] && SCRIPT="$SCRIPT_DIR/$SCRIPT"
+done
+REPO="$(cd "$(dirname "$SCRIPT")" && pwd -W 2>/dev/null || cd "$(dirname "$SCRIPT")" && pwd)"
+
+export CTERM_CWD="${PWD}"
 export XDG_CONFIG_HOME="$REPO"
 export XDG_DATA_HOME="$REPO/.data"
 export XDG_STATE_HOME="$REPO/.state"
