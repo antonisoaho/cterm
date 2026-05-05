@@ -32,5 +32,8 @@ map('n', '<leader>bd', function()
   vim.api.nvim_buf_delete(buf, { force = false })
 end, { desc = 'Close file (keep window)' })
 
--- clear search highlight
-map('n', '<Esc>', '<cmd>nohlsearch<cr>', { desc = 'Clear search highlight' })
+-- clear search highlight + pattern (so n/N don't jump after clear)
+map('n', '<Esc>', function()
+  vim.cmd('nohlsearch')
+  vim.fn.setreg('/', '')
+end, { desc = 'Clear search' })
