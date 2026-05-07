@@ -128,9 +128,9 @@ const fs=require('fs');
 const p=process.argv[1];
 let s={};
 if(fs.existsSync(p)){try{s=JSON.parse(fs.readFileSync(p,'utf8'));}catch(e){process.exit(0);}}
-if(!s.extraKnownMarketplaces)s.extraKnownMarketplaces={};
+s.extraKnownMarketplaces=s.extraKnownMarketplaces||{};
 s.extraKnownMarketplaces.caveman={source:{source:'github',repo:'JuliusBrussee/caveman'}};
-if(!s.enabledPlugins)s.enabledPlugins={};
+s.enabledPlugins=s.enabledPlugins||{};
 s.enabledPlugins['caveman@caveman']=true;
 fs.mkdirSync(require('path').dirname(p),{recursive:true});
 fs.writeFileSync(p,JSON.stringify(s,null,2)+'\n');

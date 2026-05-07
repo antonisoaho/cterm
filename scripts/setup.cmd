@@ -113,7 +113,7 @@ if not exist "!CAV_DIR!" mkdir "!CAV_DIR!"
 echo {"defaultMode":"ultra"}>"!CAV_DIR!\config.json"
 echo   Wrote !CAV_DIR!\config.json
 set "SETTINGS=%USERPROFILE%\.claude\settings.json"
-node -e "const fs=require('fs'),p=process.argv[1];let s={};if(fs.existsSync(p)){try{s=JSON.parse(fs.readFileSync(p,'utf8'));}catch(e){process.exit(0);}}if(!s.extraKnownMarketplaces)s.extraKnownMarketplaces={};s.extraKnownMarketplaces.caveman={source:{source:'github',repo:'JuliusBrussee/caveman'}};if(!s.enabledPlugins)s.enabledPlugins={};s.enabledPlugins['caveman@caveman']=true;fs.mkdirSync(require('path').dirname(p),{recursive:true});fs.writeFileSync(p,JSON.stringify(s,null,2)+'\n');" "!SETTINGS!"
+node -e "const fs=require('fs'),p=process.argv[1];let s={};if(fs.existsSync(p)){try{s=JSON.parse(fs.readFileSync(p,'utf8'));}catch(e){process.exit(0);}}s.extraKnownMarketplaces=s.extraKnownMarketplaces||{};s.extraKnownMarketplaces.caveman={source:{source:'github',repo:'JuliusBrussee/caveman'}};s.enabledPlugins=s.enabledPlugins||{};s.enabledPlugins['caveman@caveman']=true;fs.mkdirSync(require('path').dirname(p),{recursive:true});fs.writeFileSync(p,JSON.stringify(s,null,2)+'\n');" "!SETTINGS!"
 echo   Updated %USERPROFILE%\.claude\settings.json
 echo   caveman plugin will install on next claude session.
 exit /b
