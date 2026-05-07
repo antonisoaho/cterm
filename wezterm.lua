@@ -8,8 +8,21 @@ wezterm.on('gui-startup', function(cmd)
   local is_windows = wezterm.target_triple:find('windows') ~= nil
   local agent_args = is_windows and { 'cmd', '/c', agent } or { agent }
   if agent == 'claude' then
+    local py = is_windows and 'python' or 'python3'
+    local repo_fwd = repo:gsub('\\', '/')
+    local settings_tmp = repo .. '/.claude/settings.tmp.json'
+    local sl_cmd = py .. ' "' .. repo_fwd .. '/scripts/statusline.py"'
+    local hook_cmd = py .. ' "' .. repo_fwd .. '/scripts/nvim-open.py"'
+    local json = string.format(
+      '{"statusLine":{"type":"command","command":"%s","refreshInterval":5},' ..
+      '"hooks":{"PostToolUse":[{"matcher":"Write|Edit|EnterPlanMode",' ..
+      '"hooks":[{"type":"command","command":"%s"}]}]}}',
+      sl_cmd, hook_cmd)
+    local f = assert(io.open(settings_tmp, 'w'))
+    f:write(json)
+    f:close()
     table.insert(agent_args, '--settings')
-    table.insert(agent_args, repo .. '/.claude/settings.json')
+    table.insert(agent_args, settings_tmp)
   end
   local _tab, left, window = mux.spawn_window {
     cwd = cwd,

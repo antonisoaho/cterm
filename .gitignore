@@ -3,6 +3,7 @@
 .state/
 .cache/
 .claude/settings.local.json
+.claude/settings.tmp.json
 
 # user-local cterm config (created by setup.py)
 cterm.local

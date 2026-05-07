@@ -43,6 +43,31 @@ def caveman_config_dir():
     return Path.home() / '.config' / 'caveman'
 
 
+def enable_statusline():
+    py = sys.executable
+    script = (REPO / 'scripts' / 'statusline.py').as_posix()
+    command = f'"{py}" "{script}"'
+
+    settings_path = Path.home() / '.claude' / 'settings.json'
+    settings_path.parent.mkdir(parents=True, exist_ok=True)
+    settings = {}
+    if settings_path.exists():
+        try:
+            settings = json.loads(settings_path.read_text())
+        except Exception:
+            print(f"  warning: {settings_path} is not valid JSON; leaving as is")
+            return
+
+    settings['statusLine'] = {
+        'type': 'command',
+        'command': command,
+        'refreshInterval': 5,
+    }
+    settings_path.write_text(json.dumps(settings, indent=2) + '\n')
+    print(f"  updated {settings_path}")
+    print(f"  statusLine command: {command}")
+
+
 def enable_caveman():
     cfg_dir = caveman_config_dir()
     cfg_dir.mkdir(parents=True, exist_ok=True)
@@ -83,8 +108,11 @@ def main():
         size = DEFAULT_FONT_SIZE
     use_user_nvim = ask_yes_no("Use your own nvim config (instead of bundled)?", default='n')
 
+    install_statusline = False
     install_caveman = False
     if agent == 'claude':
+        install_statusline = ask_yes_no(
+            "Install statusline globally (model + cwd in claude sessions)?", default='y')
         install_caveman = ask_yes_no(
             "Install caveman plugin (terse output, default mode: ultra)?", default='n')
 
@@ -109,6 +137,10 @@ def main():
 
     print(f"\nWrote {sh}")
     print(f"Wrote {cmd}")
+
+    if install_statusline:
+        print("\nConfiguring statusline globally...")
+        enable_statusline()
 
     if install_caveman:
         print("\nEnabling caveman globally...")
