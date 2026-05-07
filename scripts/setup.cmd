@@ -102,7 +102,7 @@ goto :EOF
 :: ─────────────────────────────────────────────────────────────────────────────
 :enable_statusline
 set "SETTINGS=%USERPROFILE%\.claude\settings.json"
-set "SL_CMD=bash \"!REPO_FWD!/scripts/statusline.sh\""
+set "SL_CMD=!REPO_FWD!/scripts/statusline.cmd"
 node -e "const fs=require('fs'),p=process.argv[1],cmd=process.argv[2];let s={};if(fs.existsSync(p)){try{s=JSON.parse(fs.readFileSync(p,'utf8'));}catch(e){process.exit(0);}}s.statusLine={type:'command',command:cmd,refreshInterval:5};fs.mkdirSync(require('path').dirname(p),{recursive:true});fs.writeFileSync(p,JSON.stringify(s,null,2)+'\n');" "!SETTINGS!" "!SL_CMD!"
 echo   Updated %USERPROFILE%\.claude\settings.json
 exit /b
