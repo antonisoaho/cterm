@@ -32,6 +32,37 @@ map('n', '<leader>bd', function()
   vim.api.nvim_buf_delete(buf, { force = false })
 end, { desc = 'Close file (keep window)' })
 
+-- add file context to left CLI pane
+map('n', '<leader>fc', function()
+  local abs = vim.api.nvim_buf_get_name(0)
+  if abs == '' then return end
+
+  local dir = vim.fn.fnamemodify(abs, ':h')
+  local root = vim.fn.system({ 'git', '-C', dir, 'rev-parse', '--show-toplevel' })
+  root = root:gsub('[\r\n]+$', '')
+  if root == '' then root = vim.fn.getcwd() end
+
+  abs  = abs:gsub('\\', '/')
+  root = root:gsub('\\', '/'):gsub('/$', '')
+  local rel = abs:sub(#root + 2)
+
+  local pane_id = os.getenv('WEZTERM_PANE') or ''
+  local get_args = { 'wezterm', 'cli', 'get-pane-direction' }
+  if pane_id ~= '' then
+    table.insert(get_args, '--pane-id')
+    table.insert(get_args, pane_id)
+  end
+  table.insert(get_args, 'Left')
+
+  local left = vim.fn.system(get_args):gsub('[\r\n]+$', '')
+  if left == '' then
+    vim.notify('afc: no left pane', vim.log.levels.WARN)
+    return
+  end
+
+  vim.fn.system({ 'wezterm', 'cli', 'send-text', '--pane-id', left }, rel .. '\n')
+end, { desc = 'Add file context to CLI' })
+
 -- clear search highlight + pattern (so n/N don't jump after clear)
 map('n', '<Esc>', function()
   vim.cmd('nohlsearch')

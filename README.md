@@ -140,6 +140,7 @@ put there layers on top of the bundled config.
 | `<C-h/j/k/l>`     | Window navigation (incl. terminal)          |
 | `<Esc>` (term)    | Terminal to normal mode                     |
 | `<leader>w/q`     | Save / quit                                 |
+| `<leader>fc`      | Send current file path (git-relative) to the left agent pane |
 
 ## Statusline
 
