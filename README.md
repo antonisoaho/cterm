@@ -28,8 +28,7 @@ CLIs), a Nerd Font, and at least one agent CLI.
     winget install --id=OpenJS.NodeJS
     winget install --id=GitHub.cli
 
-JetBrainsMono Nerd Font — download `JetBrainsMono.zip` from
-https://github.com/ryanoasis/nerd-fonts/releases and install the `.ttf` files.
+JetBrainsMono Nerd Font — download from https://www.jetbrains.com/lp/mono/ and install the `.ttf` files.
 
 ### macOS (Homebrew)
 
