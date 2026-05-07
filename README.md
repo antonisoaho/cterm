@@ -17,24 +17,22 @@ automatically. Works on Windows and macOS/Linux.
 
 ## Prerequisites
 
-You need WezTerm, Neovim ≥ 0.10, Python 3, Node.js (for the npm-based agent
-CLIs), a Nerd Font, and at least one agent CLI.
+You need WezTerm, Neovim ≥ 0.10, Node.js (for the npm-based agent CLIs),
+a Nerd Font, and at least one agent CLI. Setup can install the font for you.
 
 ### Windows (winget)
 
     winget install --id=wez.wezterm
     winget install --id=Neovim.Neovim
-    winget install --id=Python.Python.3.13
     winget install --id=OpenJS.NodeJS
     winget install --id=GitHub.cli
 
-JetBrainsMono Nerd Font — download from https://www.jetbrains.com/lp/mono/ and install the `.ttf` files.
+JetBrainsMono Nerd Font — download from https://www.jetbrains.com/lp/mono/ and install the `.ttf` files, or let `cterm --setup` install it for you.
 
 ### macOS (Homebrew)
 
     brew install --cask wezterm
-    brew install neovim python node gh
-    brew install --cask font-jetbrains-mono-nerd-font
+    brew install neovim node gh
 
 ### Agent CLI (pick one or more)
 
@@ -53,7 +51,7 @@ GitHub Copilot CLI is a `gh` extension:
 
     wezterm --version
     nvim --version
-    python3 --version
+    node --version
     claude --version
 
 ## Install

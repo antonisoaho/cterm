@@ -10,18 +10,14 @@ while [ -L "$SCRIPT" ]; do
 done
 REPO="$(cd "$(dirname "$SCRIPT")" && pwd -W 2>/dev/null || cd "$(dirname "$SCRIPT")" && pwd)"
 
-PY="$(command -v python3 || command -v python || true)"
-
 # Explicit setup invocation
 if [ "${1:-}" = "--setup" ] || [ "${1:-}" = "setup" ]; then
-  [ -z "$PY" ] && { echo "python3 required for setup"; exit 1; }
-  exec "$PY" "$REPO/scripts/setup.py"
+  exec bash "$REPO/scripts/setup.sh"
 fi
 
 # First-run: no local config -> run setup
 if [ ! -f "$REPO/cterm.local" ]; then
-  [ -z "$PY" ] && { echo "python3 required for first-run setup"; exit 1; }
-  "$PY" "$REPO/scripts/setup.py" || exit $?
+  bash "$REPO/scripts/setup.sh" || exit $?
 fi
 
 # Source local overrides

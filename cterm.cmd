@@ -39,18 +39,8 @@ wezterm --config-file "%REPO%\wezterm.lua" start --always-new-process
 goto :end
 
 :run_setup
-where python >nul 2>&1
-if %errorlevel%==0 (
-  python "%REPO%\scripts\setup.py"
-  exit /b
-)
-where python3 >nul 2>&1
-if %errorlevel%==0 (
-  python3 "%REPO%\scripts\setup.py"
-  exit /b
-)
-echo python required for setup
-exit /b 1
+call "%REPO%\scripts\setup.cmd"
+exit /b
 
 :end
 endlocal
