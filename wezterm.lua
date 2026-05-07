@@ -10,8 +10,9 @@ wezterm.on('gui-startup', function(cmd)
   if agent == 'claude' then
     local repo_fwd = repo:gsub('\\', '/')
     local settings_tmp = repo .. '/.claude/settings.tmp.json'
-    local sl_cmd = 'bash "' .. repo_fwd .. '/scripts/statusline.sh"'
-    local hook_cmd = 'bash "' .. repo_fwd .. '/scripts/nvim-open.sh"'
+    local function json_str(s) return s:gsub('\\', '\\\\'):gsub('"', '\\"') end
+    local sl_cmd = json_str('bash "' .. repo_fwd .. '/scripts/statusline.sh"')
+    local hook_cmd = json_str('bash "' .. repo_fwd .. '/scripts/nvim-open.sh"')
     local json = string.format(
       '{"statusLine":{"type":"command","command":"%s","refreshInterval":5},' ..
       '"hooks":{"PostToolUse":[{"matcher":"Write|Edit|EnterPlanMode",' ..
