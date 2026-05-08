@@ -58,7 +58,7 @@ map('n', '<leader>fc', function()
     return
   end
 
-  vim.fn.system({ 'wezterm', 'cli', 'send-text', '--pane-id', left }, rel .. '\n')
+  vim.fn.system({ 'wezterm', 'cli', 'send-text', '--pane-id', left }, '@' .. rel .. '\n')
 end, { desc = 'Add file context to CLI' })
 
 -- clear search highlight + pattern (so n/N don't jump after clear)
