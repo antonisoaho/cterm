@@ -24,6 +24,19 @@ wezterm.on('gui-startup', function(cmd)
     table.insert(agent_args, '--settings')
     table.insert(agent_args, settings_tmp)
   end
+  local extras_file = os.getenv('CTERM_EXTRAS_FILE')
+  if extras_file then
+    local ef = io.open(extras_file, 'r')
+    if ef then
+      for line in ef:lines() do
+        local trimmed = line:gsub('\r$', '')
+        if trimmed ~= '' then
+          table.insert(agent_args, trimmed)
+        end
+      end
+      ef:close()
+    end
+  end
   local _tab, left, window = mux.spawn_window {
     cwd = cwd,
     args = agent_args,

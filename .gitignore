@@ -4,6 +4,7 @@
 .cache/
 .claude/settings.local.json
 .claude/settings.tmp.json
+.claude/agent-extras.tmp
 
 # user-local cterm config (created by setup.py)
 cterm.local

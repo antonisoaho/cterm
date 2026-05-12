@@ -20,8 +20,29 @@ if not exist "%REPO%\cterm.local.cmd" (
 call "%REPO%\cterm.local.cmd"
 
 set "CTERM_CWD=%CD%"
-if "%~1"=="" (set "CTERM_AGENT=%CTERM_DEFAULT_AGENT%") else (set "CTERM_AGENT=%~1")
+
+rem First positional arg is the agent name only if it doesn't start with `-`.
+rem Otherwise use default agent and forward all args.
+set "CTERM_AGENT="
+set "_FIRST=%~1"
+set "_LEAD="
+if defined _FIRST set "_LEAD=%_FIRST:~0,1%"
+if defined _FIRST if not "%_LEAD%"=="-" (
+  set "CTERM_AGENT=%~1"
+  shift
+)
+if "%CTERM_AGENT%"=="" set "CTERM_AGENT=%CTERM_DEFAULT_AGENT%"
 if "%CTERM_AGENT%"=="" set "CTERM_AGENT=claude"
+
+set "CTERM_EXTRAS_FILE=%REPO%\.claude\agent-extras.tmp"
+type nul > "%CTERM_EXTRAS_FILE%"
+:extras_loop
+if "%~1"=="" goto extras_done
+>>"%CTERM_EXTRAS_FILE%" echo(%~1
+shift
+goto extras_loop
+:extras_done
+
 set "CTERM_REPO=%REPO%"
 set /a "_NVIM_PORT=6666 + %RANDOM% %% 1000"
 set "CTERM_NVIM_ADDR=127.0.0.1:%_NVIM_PORT%"

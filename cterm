@@ -26,7 +26,24 @@ set -a
 set +a
 
 export CTERM_CWD="${PWD}"
-export CTERM_AGENT="${1:-${CTERM_DEFAULT_AGENT:-claude}}"
+
+# First positional arg is the agent name only if it doesn't start with `-`.
+# Otherwise fall back to the configured default and forward all args to the agent.
+if [ $# -gt 0 ] && [ "${1#-}" = "$1" ]; then
+  CTERM_AGENT="$1"
+  shift
+else
+  CTERM_AGENT="${CTERM_DEFAULT_AGENT:-claude}"
+fi
+export CTERM_AGENT
+
+CTERM_EXTRAS_FILE="$REPO/.claude/agent-extras.tmp"
+: > "$CTERM_EXTRAS_FILE"
+for _arg in "$@"; do
+  printf '%s\n' "$_arg" >> "$CTERM_EXTRAS_FILE"
+done
+export CTERM_EXTRAS_FILE
+
 export CTERM_REPO="$REPO"
 export CTERM_NVIM_ADDR="127.0.0.1:$((6666 + RANDOM % 1000))"
 
