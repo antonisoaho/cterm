@@ -24,18 +24,34 @@ wezterm.on('gui-startup', function(cmd)
     table.insert(agent_args, '--settings')
     table.insert(agent_args, settings_tmp)
   end
+  local add_dirs = {}
   local extras_file = os.getenv('CTERM_EXTRAS_FILE')
   if extras_file then
     local ef = io.open(extras_file, 'r')
     if ef then
+      local prev = nil
       for line in ef:lines() do
         local trimmed = line:gsub('\r$', '')
         if trimmed ~= '' then
           table.insert(agent_args, trimmed)
+          if prev == '--add-dir' or prev == '-d' then
+            table.insert(add_dirs, trimmed)
+          end
+          prev = trimmed
         end
       end
       ef:close()
     end
+  end
+  local nvim_args = { 'nvim', '--listen', os.getenv('CTERM_NVIM_ADDR') or '127.0.0.1:6666' }
+  for _, dir in ipairs(add_dirs) do
+    local d = dir:gsub('\\', '/'):gsub("'", "''")
+    table.insert(nvim_args, '-c')
+    table.insert(nvim_args, "tabnew | exe 'tcd ' . fnameescape('" .. d .. "') | Neotree show")
+  end
+  if #add_dirs > 0 then
+    table.insert(nvim_args, '-c')
+    table.insert(nvim_args, 'tabfirst')
   end
   local _tab, left, window = mux.spawn_window {
     cwd = cwd,
@@ -45,7 +61,7 @@ wezterm.on('gui-startup', function(cmd)
     direction = 'Right',
     size = 0.55,
     cwd = cwd,
-    args = { 'nvim', '--listen', os.getenv('CTERM_NVIM_ADDR') or '127.0.0.1:6666' },
+    args = nvim_args,
   }
   window:gui_window():maximize()
 end)
